@@ -4,10 +4,10 @@
 
 "use strict";
 
-// Optional. You will see this name in eg. 'ps' or 'top' command
-process.title = 'ExampleShooter';
+// Process title
+process.title = 'PhysicsMultiplay';
 
-var defaultPort = 3000;
+var defaultPort = 80;
 
 // Do some requirements that I do not understand
 var express = require('express')
@@ -70,6 +70,9 @@ var wsServer = new WebSocketServer({
 /**********************************************************************
 * Define global variables
 ***********************************************************************/
+
+var DEBUG_LOG = false;
+
 /*
 * Define cannon world
 */
@@ -157,7 +160,8 @@ wsServer.on('request', function(request) {
           }
         } else if (jd.type === "killrequest") {
           // Remove the object from the scene
-          console.log(JSON.stringify(jd));
+          if (DEBUG_LOG)
+            console.log(JSON.stringify(jd));
           removeEntityFromScene(jd.data.entityId);
           // Broadcast the kill event to all clients
           broadcastJsonEvent(JSON.stringify(jd));
@@ -173,16 +177,19 @@ wsServer.on('request', function(request) {
             createSphere(pos,jd.data.mass,jd.data.radius);
           }
         } else if (jd.type === "clearScene") {
-          console.log(JSON.stringify(jd));
+          if (DEBUG_LOG)
+            console.log(JSON.stringify(jd));
           clearScene();
           broadcastJsonEvent(JSON.stringify(jd));
           createScene();
         } else if (jd.type === "mousedown") {
-          console.log(JSON.stringify(jd));
+          if (DEBUG_LOG)
+            console.log(JSON.stringify(jd));
           
           // Delete previous mouse joint
           if(mouseJoint){
-            console.log("rem old constriant")
+            if (DEBUG_LOG)
+              console.log("rem old constriant")
             mouseJoint.removeJointConstraint();
             mouseJoint = false;
           }
@@ -193,14 +200,17 @@ wsServer.on('request', function(request) {
               cannonEntities[jd.data.entityId],cannonWorld);
 
           // Print number of constriants
-          console.log("num constriants: " + cannonWorld.constraints.length);
+          if (DEBUG_LOG)
+            console.log("num constriants: " + cannonWorld.constraints.length);
 
         } else if (jd.type === "mouseup") {
-          console.log(JSON.stringify(jd));
+          if (DEBUG_LOG)
+            console.log(JSON.stringify(jd));
 
           // Delete previous mouse joint
           if(mouseJoint){
-            console.log("rem old constriant")
+            if (DEBUG_LOG)
+              console.log("rem old constriant")
             mouseJoint.removeJointConstraint();
             mouseJoint = false;
           }
@@ -213,7 +223,8 @@ wsServer.on('request', function(request) {
           if (jd.data.type === "chat") 
             sendChatMessage(jd,clientName,clientColor);
         } else {
-          console.log("recieved unkown message type: " + jd.type);
+          if (DEBUG_LOG)
+            console.log("recieved unkown message type: " + jd.type);
         }
       }
     });
@@ -477,8 +488,6 @@ function sendPlayerInformationToClient(clientId,players){
 
 function sendUpdatedPlyersInfo(){
   for (var key in clientInformation) {
-    console.log(key);
-    console.log(clientInformation[key]);
     sendPlayerInformationToClient(clientInformation[key].id,clientInformation);
   }  
 }
@@ -494,7 +503,8 @@ function sendClientJoinAccept(clientId,clientName,clientColor){
     // COnstruct information
   var js = {type:"clientJoinAccept", data:{id:clientId,name:clientName,color:clientColor}};    
   var json = JSON.stringify(js);
-  console.log("sending client join accpet: " + json);
+  if (DEBUG_LOG)
+    console.log("sending client join accpet: " + json);
   clientConnections[clientId.toString()].sendUTF(json);
 }
 

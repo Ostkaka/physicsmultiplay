@@ -20,7 +20,6 @@ var nameboxtext = $('#nameboxtext');
 var nameboxinput = $('#nameboxinput');
 var login = $('#login');
 
-
 // Hide all elements in the site until player has connected
 info.hide();
 help.hide();
@@ -43,15 +42,8 @@ if (!window.WebSocket) {
     return;
 }
 
-// Establish connection with server
-
-// Do windows location stuff
-if (window.location.hostname.toString() === "192.168.0.105")
-  var serverAdress = "ws://192.168.0.105:80"; 
-else 
-  var serverAdress = "ws://213.21.117.102:80"
-
-var serverAdress = 'ws://http://physbox.jit.su/'
+// Construct server adress
+var serverAdress = "ws://" + window.location.hostname + ":80";
 
 var serverConnection = new WebSocket(serverAdress);
 
@@ -99,7 +91,6 @@ var activePlayers = {};  // Holds information about every connected player
 
 /*********************************************************************
 * THIS IS WERE THE MAIN LOOP STARTS
-* 
 *********************************************************************/
 
 container = document.getElementById( 'container' );
