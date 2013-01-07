@@ -1,0 +1,17 @@
+{
+  "name": "application-name",
+  "version": "0.0.1-5",
+  "private": true,
+  "subdomain": "physbox",
+  "scripts": {
+    "start": "node cannon_server.js"
+  },
+  "dependencies": {
+    "express": "3.0.4",
+    "ejs": "*",
+    "websocket": "*"
+  },
+  "engines": {
+    "node": ">=0.6"
+  }
+}

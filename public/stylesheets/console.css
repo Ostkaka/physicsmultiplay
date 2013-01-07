@@ -1,0 +1,95 @@
+        * { font-family:arial; 
+        	font-size:12px; 
+        	padding:0px; 
+        	margin:0px; 
+        	color: white;}
+        p { line-height:18px; }
+
+
+        #content {  
+                    padding: 5px; 
+                    background: rgba(50, 50, 50, 0.3); 
+                    border: 1px 
+                    solid #CCC; 
+                    margin-top: 10px;
+                    margin-left: 10px;
+                    width: 470px; 
+                    height: 200px; 
+                    overflow: auto;
+                    display: block;
+                    word-wrap: break-word;      
+                    border-radius: 3px;
+                  }
+
+        #console {  
+              			position : absolute; 
+              			bottom: 10%;
+              			left: 0%;
+                    padding: 5px;
+                    background: rgba(0, 0, 0, 0.5); 
+                    border: 1px 
+                    solid rgba(0,0,0,1); 
+                    -webkit-transform: scale(1.0);            
+                  }
+
+        #input { 
+                 border-radius: 2px; 
+                 border:1px solid #ccc;
+                 margin-top: 10px;
+                 margin-left: 10px; 
+                 padding: 5px; 
+                 width: 470px;  
+                 background: rgba(0, 0, 0, 0.5); 
+               }
+
+
+        #info {
+                color:#fff;
+                position: absolute;
+                top: 0px; width: 100%;
+                padding: 5px;
+                z-index:100;
+                overflow: hidden;
+                font-family:arial;
+                font-size:13px;
+                text-align:center;
+                font-weight: bold;
+                text-align:center;
+              }
+
+        #playertab {
+              top: 1%;
+              left: 1%;
+              position : absolute; 
+              padding: 5px;
+              width: 7%; 
+              height: 15%; 
+              background: rgba(0, 0, 0, 0.5); 
+              display: block;
+              overflow: hidden;
+              border: 1px 
+              solid rgba(0,0,0,1); 
+              word-wrap: normal;
+              white-space:nowrap;
+        }
+
+        #connectedPlayers {
+              display: block;
+              overflow: hidden;
+              solid rgba(0,0,0,1); 
+        }
+
+        #help {
+                color:#fff;
+                position: absolute;
+                top: 10%; 
+                left: 80%; 
+                height: 20%;
+                width: 15%;
+                padding: 0px;
+                z-index:100;
+                overflow: hidden;
+                font-family:arial;
+                font-size:13px;
+                text-align:left;
+        }

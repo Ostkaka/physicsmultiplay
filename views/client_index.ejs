@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>cannon.js + three.js physics shooter</title>
+        <link rel="stylesheet" type="text/css" href="stylesheets/shooterstyle.css" />
+        <link rel="stylesheet" type="text/css" href="stylesheets/console.css" />
+    </head>
+    <body>
+        <!-- Load javascript dependencies -->
+        <script src="js/three.min.js"></script>
+        <script src="js/jquery.js"></script>    
+        <script src="js/cannon.js"></script>
+        <script src="js/PointerLockControls.js"></script>
+        <script src="js/chatconsole.js"></script>
+
+        <!-- This is the holder for the graphics, render first-->
+        <div id="container"></div>
+
+        <!-- Add connected players div-->
+        <div id="playertab">
+            <span style="font-weight: bold; text-align:center">Connected Players</span>
+            <div id="connectedPlayers"></div>
+        </div>
+        
+        <!-- infobox -->
+        <div id="info"></div>
+
+        <!-- Set a div that information in text-->
+        <div id="help"> 
+            <span style="font-weight: bold; text-align:center">Controls</span> </br>
+            <span>Ctrl+LCklick: Drag objects</span> </br>
+            <span>A: Spawn box</span> </br>
+            <span>S: Spawn sphere</span> </br>
+            <span>U: Reset scene</span> </br>
+            <span>D: Forcefield</span> 
+        </div>
+
+        <!-- Apply chat window -->
+        <div id="console">
+            <div id="content"></div>
+            <div>
+                <input type="text" id="input" />
+            </div>
+        </div>
+
+        <!-- This is a namebox where you put your name, this should block all input until a name has been ven -->
+        <div id="login">  
+            <div id="wrap">
+                <span style="font-size:40px; margin-bottom:100px">
+                    Welcome to the physics sandbox!
+                </span>
+                <br />
+                <span id="nameboxtext">Connecting to chat server...</span>
+                <input type="text" id="nameboxinput" disabled="disabled"/>
+            </div>
+        </div> 
+
+        <!-- Add the script for the rendering of the server simulaton -->
+        <script src="js/utility.js"></script>
+        <script src="js/cannon_client.js"></script>
+        <script src="js/TrackballControls.js"></script>
+    </body>
+</html>
