@@ -25,7 +25,7 @@ in the app directory to install all dependencies globaly.
 
 Start the app by running
 ```
-node app.js
+node cannon_server.js
 ```
 in the app directory. This should be all that is required to start a server.
 
