@@ -42,7 +42,7 @@ if (!window.WebSocket) {
 }
 
 // Construct server adress
-var serverAdress = "ws://" + window.location.hostname + ":80";
+var serverAdress = "ws://" + window.location.hostname + ":3000";
 
 var serverConnection = new WebSocket(serverAdress);
 
