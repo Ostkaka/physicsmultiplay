@@ -7,6 +7,7 @@ The scene features multi user interactions such as:
  * Object spawning (boxes and spheres).
  * Mouse picking (Pick and throw objects around with the mouse).
  * Apply a point gravity field.
+ * Chat with other players
 
 Server-client communication is done using WebSockets with packets in JSON text-format. Simulation
 in done serverside only, while clients handle rendering and sending user events.
