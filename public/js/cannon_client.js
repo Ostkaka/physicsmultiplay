@@ -21,7 +21,6 @@ var nameboxinput = $('#nameboxinput');
 var login = $('#login');
 
 // Hide all elements in the site until player has connected
-info.hide();
 help.hide();
 playerContrainer.hide();
 $("#console").hide();
@@ -72,12 +71,11 @@ var clock = false;
 var time;
 
 // Values for mouse movement
-var gplaneContainer = false;
 var gplane = false;
 var cameraInterpolator = false;
 
+// Cheat sheet for buttons
 var BUTTONS = { A: 65, B: 66, C: 67, D: 68, S: 83, R:82, U:85, ESC:27,ENTER:13};
-
 
 // This holds the clickmarker mesh
 var clickMarker = false;
@@ -87,7 +85,8 @@ var markerMaterial = false;
 var renderEntities = {};
 var materialVector = [];
 
-var activePlayers = {};  // Holds information about every connected player
+// Holds information about every connected player
+var activePlayers = {};  
 
 /*********************************************************************
 * THIS IS WERE THE MAIN LOOP STARTS
@@ -137,14 +136,8 @@ animate();
         clientName = jsonData.data.name;
         clientId = jsonData.data.id;
 
-        // Set marker material to color
-        // Need to fix color codes first!
-        //markerMaterial.color = clientColor;
-        //console.log(clickMarker);
+        // TODO: Set marker material to color
 
-        if (DEBUG) 
-          info.show();
-        
         help.show();
         playerContrainer.show();
         $("#console").show();
@@ -158,12 +151,6 @@ animate();
        
         // Get information about every object
         var bodies = jsonData.bodies;       
-
-        if ( DEBUG ) {
-          // Print json string data to the infobox
-          var string = JSON.stringify(jsonData);
-          info.append(string);
-        }
 
         // synch entities from sent json information
         synchEntities(jsonData,renderEntities);
@@ -186,7 +173,7 @@ animate();
     };
 
     /**
-     * This method is optional. If the server wasn't able to respond to the
+     * If the server wasn't able to respond to the
      * in 3 seconds then show some error message to notify the user that
      * something is wrong.
      */
@@ -282,18 +269,16 @@ function initBasicCamera(){
 }
 
 function initInterpolationCamera() {
-  cameraInterpolator = new CameraInterpolation(gCamera,[0,-1,0],30,40,0.1);
+  cameraInterpolator = new CameraInterpolation(gCamera,[0,-1,0],30,40,10);
   gCamera.lookAt(new THREE.Vector3(0,-1,0));
 }
 
 function initThree(){
-  //camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
   gCamera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
 
   initInterpolationCamera();
 
   // CONTROLS
-
   if (useControls){
     controls = new THREE.TrackballControls( gCamera, container );
     controls.rotateSpeed = 1.0;
@@ -307,8 +292,6 @@ function initThree(){
     controls.dynamicDampingFactor = 0.3;
 
     controls.keys = [ 65, 83, 68 ];
-
-    //controls.addEventListener( 'change', render );
   }
 
   threeScene = new THREE.Scene();
@@ -336,7 +319,6 @@ function initThree(){
       light.shadowMapWidth = 2*512;
       light.shadowMapHeight = 2*512;
 
-      //light.shadowCameraVisible = true;
   }
 
   threeScene.add( light );
@@ -434,9 +416,9 @@ function createRenderEntity(jbody) {
 
 function sendGravityEvent() {
   // Send event data in json format
-  var clientdata = {inputtype:"gravity", position:[0,10,0], force:1000};
+  var clientdata = {position:[0,10,0], force:1000};
 
-  var jd = {type:"userinput", data:clientdata}; 
+  var jd = {type:"gravity", data:clientdata}; 
 
   // Make data to JSON string format and send it to server
   serverConnection.send(JSON.stringify(jd));
@@ -578,11 +560,9 @@ function getRayCasterFromScreenCoord (screenX, screenY, camera, projector) {
 
 function findNearestIntersectingObject(clientX,clientY,camera,objects) {
 
-  // Information about the cklick object
-  var iinfo = "";
-
   // Get the picking ray from the point
   var raycaster = getRayCasterFromScreenCoord(clientX, clientY, camera, projector);
+
   // Covert renderentities to an array of objects
   var tempArray = [];
   for (it in objects) {
@@ -604,10 +584,7 @@ function findNearestIntersectingObject(clientX,clientY,camera,objects) {
         closest.objectId = key;
       }
     }
-  } 
-  if (closest.object)
-    iinfo += ' :::: ' + meshEntityToString(closest.object); 
-  info.text(iinfo);        
+  }       
   return closest;
 }
 
@@ -619,7 +596,6 @@ function setScreenPerpCenter(point, camera) {
       var plane = gplane = new THREE.Mesh(planeGeo,material);
       plane.visible = false; // Hide it..
       plane.useQuaternion = true;
-      //planeContainer.useQuaternion = true;
       threeScene.add(gplane);
     }
 
@@ -628,7 +604,6 @@ function setScreenPerpCenter(point, camera) {
     
     // Make it face toward the camera
     gplane.quaternion = camera.quaternion;
-
 }
 
 // global variables to ease the updating of the mouse movement
@@ -767,7 +742,7 @@ function clientMouseMove(e) {
       var pos = projectOntoPlane(e.clientX,e.clientY,gplane,gCamera);
       setClickMarker(pos.x,pos.y,pos.z,threeScene);
 
-      // Need to find the plane of movement - fuck
+      // Need to find the plane of movement 
       if (pos) 
         sendMoveMouseJointEvent(pos);
     }
@@ -915,19 +890,23 @@ function CameraInterpolation(camera, center, height,  radius, speed) {
 
   // Set quaternion form axis and angle 
   this.quaternion.setFromAxisAngle(this.axis,0);
-  this.quaternion.normalize();
-
-    // Interpolates the camera position
+  
+  // Interpolates the camera position
   this.step = function (dt) {
     time = time + dt;
-    //this.dummyQuat.setFromAxisAngle(this.axis,dt);
-    this.quaternion.setFromAxisAngle(this.axis,time / 10);
 
+    // Set axis of the quaternion from time
+    this.quaternion.setFromAxisAngle(this.axis,time / speed);
+
+    // Normalize
+    this.quaternion.normalize();
+
+    // Rotate the vector using the quaternion
     this.quaternion.multiplyVector3(this.radiusVec,this.rotVector);
 
+    // Set postion according to rotated vector
     this.camera.position = new THREE.Vector3().add(this.center,this.rotVector);
     this.camera.position.setY(height);
   }
-
 }
 });

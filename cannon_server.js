@@ -7,7 +7,7 @@
 // Process title
 process.title = 'PhysicsMultiplay';
 
-var defaultPort = 80;
+var defaultPort = 3000;
 
 // Do some requirements that I do not understand
 var express = require('express')
@@ -151,26 +151,33 @@ wsServer.on('request', function(request) {
 
           // Send updated player info to all clients
           sendUpdatedPlyersInfo();
-          // This is a user input event
-        } else if(jd.type === "userinput") {
-          // See what type of user input event it is
-          if(jd.data.inputtype === "gravity") {
-            // Add point gravity field on all objects in the scene
-            addPointGravityForce(jd.data.position,jd.data.force);
-          }
+        } 
+        else if(jd.type === "gravity") {
+          // Add point gravity field on all objects in the scene
+          addPointGravityForce(jd.data.position,jd.data.force);
+
         } else if (jd.type === "killrequest") {
+
           // Remove the object from the scene
           if (DEBUG_LOG)
             console.log(JSON.stringify(jd));
+
+          // Remove the entity
           removeEntityFromScene(jd.data.entityId);
+
           // Broadcast the kill event to all clients
           broadcastJsonEvent(JSON.stringify(jd));
+
         } else if (jd.type === "createEntity") {
-          console.log(JSON.stringify(jd));
-          // Add box (pos,rot,halfExtents2,
+
+          if (DEBUG_LOG)
+            console.log(JSON.stringify(jd));
+
           // randomize position
           var pos = new CANNON.Vec3((Math.random()-0.5)*20,10 + (Math.random()-0.5)*1,(Math.random()-0.5)*20);
+         
           if (jd.data.entitytype === "box") {
+            
             var halfExtents = new CANNON.Vec3(jd.data.halfExtents[0],jd.data.halfExtents[1],jd.data.halfExtents[2]);
             createBox(pos,jd.data.mass,halfExtents);
           } else if (jd.data.entitytype === "sphere") {
@@ -179,10 +186,14 @@ wsServer.on('request', function(request) {
         } else if (jd.type === "clearScene") {
           if (DEBUG_LOG)
             console.log(JSON.stringify(jd));
+
           clearScene();
+          
           broadcastJsonEvent(JSON.stringify(jd));
+          
           createScene();
-        } else if (jd.type === "mousedown") {
+        
+        }else if (jd.type === "mousedown") {
           if (DEBUG_LOG)
             console.log(JSON.stringify(jd));
           
@@ -210,13 +221,16 @@ wsServer.on('request', function(request) {
           // Delete previous mouse joint
           if(mouseJoint){
             if (DEBUG_LOG)
-              console.log("rem old constriant")
+              console.log("rem old constriant");
+
             mouseJoint.removeJointConstraint();
             mouseJoint = false;
           }
         } else if (jd.type === "mousemove") {
           // Move the mouse joint 
           var pos = new CANNON.Vec3(jd.data.point[0],jd.data.point[1],jd.data.point[2]);
+
+          // Move the mouse joint
           if(mouseJoint) mouseJoint.moveJointToPoint(pos);
         } else if (jd.type === "message"){
           // Check type of message
@@ -236,7 +250,6 @@ wsServer.on('request', function(request) {
 
             sendPlayerInfoEvent(clientId,clientName,clientColor,true);
 
-            // remove user from the list of connected clients
             // remove connection
             delete clientConnections[clientId.toString()];
             // remove information 
@@ -260,7 +273,7 @@ function clearScene() {
     removeEntityFromScene(key);
   }
   // Clear the body array, just to be safe
-  cannonEntities = {}
+  cannonEntities = {};
 }
 
 /**
