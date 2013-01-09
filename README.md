@@ -33,8 +33,8 @@ Note: to change the default port 80, you have to change it in both cannon_server
 
 ## Ideas and Todos
 * Support convex shapes. Teapots and rabbits mandatory.
-* Send update of an entity to clients only if has been changed.
-* Improved mouse-pick rendering.
+* Send update of an entity to clients only if it has been changed.
+* Improved mouse-pick rendering. Link between points in constraint.
 * Render mouse picks of other clients.
 * Binary packets instead of text.
 * Limit number of players.
