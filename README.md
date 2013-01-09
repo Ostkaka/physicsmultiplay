@@ -1,5 +1,12 @@
-This is a demo for a multiplayer physics playground based on cannon.js, three.js 
-and node.js.
+## Physics multiplayer demo
+
+This is simple a demo for a multiplayer physics playground based on 
+[three.js](https://github.com/mrdoob/three.js), [cannon.js](https://github.com/schteppe/cannon.js),
+ and [node.js](http://nodejs.org/).
+
+Server-client communication is done using WebSockets with packets in JSON text-format. Simulation is done serverside only, while clients handle rendering.
+
+### Usage
 
 To install, clone the repository and do:
 
