@@ -1,12 +1,19 @@
-## Physics multiplayer demo
+# Physics multiplayer demo
 
 This is simple a demo for a multiplayer physics playground based on 
 [three.js](https://github.com/mrdoob/three.js), [cannon.js](https://github.com/schteppe/cannon.js),
  and [node.js](http://nodejs.org/).
 
+The scene features multi-user interactions such as:
+
+ * Object spawning (boxes and spheres).
+ * Mouse picking (Pick and throw objects around with the mouse).
+ * Apply a point gravity field.
+ * Chat with other players
+
 Server-client communication is done using WebSockets with packets in JSON text-format. Simulation is done serverside only, while clients handle rendering.
 
-### Usage
+### Installation and Usage
 
 To install, clone the repository and do:
 
