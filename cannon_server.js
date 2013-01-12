@@ -7,7 +7,7 @@
 // Process title
 process.title = 'PhysicsMultiplay';
 
-var defaultPort = 80;
+var defaultPort = 3000;
 
 // Do some requirements that I do not understand
 var express = require('express')
